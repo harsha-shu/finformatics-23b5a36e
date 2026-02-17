@@ -9,8 +9,12 @@ const Index = () => {
   const [profile, setProfile] = useState<InvestorProfile>({
     name: "",
     age: 30,
-    riskAppetite: 14,
-    capitalRange: "50K-75K",
+    educationBackground: "Commerce",
+    income: "25K-75K",
+    sourceOfIncome: "Salary",
+    awareOfFinancialMarkets: true,
+    riskAppetite: 8,
+    capitalRange: "25K-50K",
   });
 
   const result = useMemo(() => computeInvestment(profile), [profile]);
@@ -75,17 +79,22 @@ const Index = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Asset Allocation List */}
+            {/* Asset Allocation List with amounts */}
             <div>
               <h3 className="text-lg font-semibold mb-3">Recommended Asset Allocation</h3>
               <ul className="space-y-2">
                 {result.allocation.map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-foreground">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    {item.name}: {item.percentage}%
+                  <li key={i} className="flex items-center justify-between text-foreground">
+                    <span className="flex items-center gap-3">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      {item.name}: {item.percentage}%
+                    </span>
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      ₹{item.amount?.toLocaleString("en-IN")}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -99,7 +108,7 @@ const Index = () => {
             {/* Pie Chart */}
             <AllocationChart
               data={result.allocation}
-              title="Recommended US Market Asset Allocation"
+              title="Recommended Indian Market Asset Allocation"
             />
           </CardContent>
         </Card>
@@ -113,16 +122,17 @@ const Index = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Invest between{" "}
-              <span className="font-semibold text-foreground">
-                ${result.investmentRange[0].toLocaleString()}
-              </span>{" "}
-              –{" "}
-              <span className="font-semibold text-foreground">
-                ${result.investmentRange[1].toLocaleString()}
-              </span>
-            </p>
+            <div className="space-y-2">
+              <p className="text-muted-foreground">
+                Suggested investment:{" "}
+                <span className="text-2xl font-bold text-foreground">
+                  ₹{result.suggestedInvestment.toLocaleString("en-IN")}
+                </span>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Range: ₹{result.investmentRange[0].toLocaleString("en-IN")} – ₹{result.investmentRange[1].toLocaleString("en-IN")}
+              </p>
+            </div>
 
             <div className="rounded-lg bg-warning/15 border border-warning/30 p-4">
               <p className="text-sm text-warning-foreground">
