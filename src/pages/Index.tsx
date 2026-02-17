@@ -97,7 +97,7 @@ const Index = () => {
                           {item.name}: {item.percentage}%
                         </span>
                         <span className="text-sm font-semibold text-muted-foreground">
-                          ₹{item.amount?.toLocaleString("en-IN")}
+                          ${item.amount?.toLocaleString("en-US")}
                         </span>
                       </li>
                     ))}
@@ -128,11 +128,11 @@ const Index = () => {
                   <p className="text-muted-foreground">
                     Suggested investment:{" "}
                     <span className="text-2xl font-bold text-foreground">
-                      ₹{result.suggestedInvestment.toLocaleString("en-IN")}
+                      ${result.suggestedInvestment.toLocaleString("en-US")}
                     </span>
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Range: ₹{result.investmentRange[0].toLocaleString("en-IN")} – ₹{result.investmentRange[1].toLocaleString("en-IN")}
+                    Range: ${result.investmentRange[0].toLocaleString("en-US")} – ${result.investmentRange[1].toLocaleString("en-US")}
                   </p>
                 </div>
 
