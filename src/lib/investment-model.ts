@@ -38,10 +38,10 @@ export function computeInvestment(profile: InvestorProfile): InvestmentResult {
   // Investment range based on capital
   let investmentRange: [number, number];
   switch (capitalRange) {
-    case "0-25K": investmentRange = [1000, 5000]; break;
-    case "25K-50K": investmentRange = [5000, 15000]; break;
-    case "50K-75K": investmentRange = [10000, 25000]; break;
-    default: investmentRange = [20000, 50000]; break;
+    case "0-25K": investmentRange = [5000, 25000]; break;
+    case "25K-50K": investmentRange = [25000, 50000]; break;
+    case "50K-75K": investmentRange = [50000, 75000]; break;
+    default: investmentRange = [75000, 200000]; break;
   }
 
   // Suggested investment (midpoint adjusted by risk)
