@@ -4,6 +4,7 @@ import { InvestorForm, type InvestorProfile } from "@/components/InvestorForm";
 import { AllocationChart } from "@/components/AllocationChart";
 import { computeInvestment } from "@/lib/investment-model";
 import { TrendingUp, Shield, DollarSign, User } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   const [profile, setProfile] = useState<InvestorProfile>({
@@ -23,10 +24,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card">
-        <div className="container max-w-7xl py-6">
-          <p className="text-sm text-primary font-medium tracking-wide uppercase">
-            Investor Profiling and Multi-Factor Risk-Based Investment Model
-          </p>
+        <div className="container max-w-7xl py-4 flex items-center gap-3">
+          <img src={logo} alt="FinFormatics logo" className="h-10 w-10" />
+          <div>
+            <h1 className="text-xl font-display font-bold text-foreground">FinFormatics</h1>
+            <p className="text-xs text-muted-foreground tracking-wide uppercase">
+              Predictive Modeling for Retail Wealth Diversification
+            </p>
+          </div>
         </div>
       </header>
 
