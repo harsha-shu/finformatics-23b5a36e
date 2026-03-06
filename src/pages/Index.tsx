@@ -25,9 +25,9 @@ const Index = () => {
       {/* Header */}
       <header className="border-b bg-card">
         <div className="container max-w-7xl py-4 flex items-center gap-3">
-          <img src={logo} alt="FinFormatics logo" className="h-10 w-10" />
+          <img src={logo} alt="finformatics logo" className="h-10 w-10" />
           <div>
-            <h1 className="text-xl font-display font-bold text-foreground">FinFormatics</h1>
+            <h1 className="text-xl font-display font-bold text-foreground">finformatics</h1>
             <p className="text-xs text-muted-foreground tracking-wide uppercase">
               Predictive Modeling for Retail Wealth Diversification
             </p>
@@ -66,15 +66,11 @@ const Index = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-1">
                     <p className="text-sm text-muted-foreground">Expected Annual Return (%)</p>
-                    <p className="text-4xl font-display font-bold text-foreground">
-                      {result.expectedReturn}
-                    </p>
+                    <p className="text-4xl font-display font-bold text-foreground">{result.expectedReturn}</p>
                   </div>
                   <div className="space-y-1">
                     <p className="text-sm text-muted-foreground">Investor Category</p>
-                    <p className="text-lg font-semibold text-foreground">
-                      {result.category}
-                    </p>
+                    <p className="text-lg font-semibold text-foreground">{result.category}</p>
                   </div>
                 </div>
               </CardContent>
@@ -101,7 +97,7 @@ const Index = () => {
                           />
                           {item.name}: {item.percentage}%
                         </span>
-                  <span className="text-sm font-semibold text-muted-foreground">
+                        <span className="text-sm font-semibold text-muted-foreground">
                           ₹{item.amount?.toLocaleString("en-IN")}
                         </span>
                       </li>
@@ -113,10 +109,7 @@ const Index = () => {
                   <p className="text-sm text-info-foreground">{result.strategy}</p>
                 </div>
 
-                <AllocationChart
-                  data={result.allocation}
-                  title="Recommended Indian Market Asset Allocation"
-                />
+                <AllocationChart data={result.allocation} title="Recommended Indian Market Asset Allocation" />
               </CardContent>
             </Card>
 
@@ -137,7 +130,8 @@ const Index = () => {
                     </span>
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Range: ₹{result.investmentRange[0].toLocaleString("en-IN")} – ₹{result.investmentRange[1].toLocaleString("en-IN")}
+                    Range: ₹{result.investmentRange[0].toLocaleString("en-IN")} – ₹
+                    {result.investmentRange[1].toLocaleString("en-IN")}
                   </p>
                 </div>
 
