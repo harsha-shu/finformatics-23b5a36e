@@ -1,150 +1,357 @@
-import { useState, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InvestorForm, type InvestorProfile } from "@/components/InvestorForm";
-import { AllocationChart } from "@/components/AllocationChart";
-import { computeInvestment } from "@/lib/investment-model";
-import { TrendingUp, Shield, DollarSign, User } from "lucide-react";
+import { ResultsModal } from "@/components/ResultsModal";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  computeInvestment,
+  type InvestmentResult,
+} from "@/lib/investment-model";
+import {
+  TrendingUp,
+  Shield,
+  DollarSign,
+  User,
+  Calculator,
+  Sparkles,
+  BarChart,
+} from "lucide-react";
 import logo from "@/assets/logo.png";
+import Lottie from "lottie-react";
+import loadingAnimation from "@/assets/loading-spinner.json";
+import { Button } from "@/components/ui/button";
+
+const DEFAULT_PROFILE: InvestorProfile = {
+  name: "",
+  age: 30,
+  educationBackground: "Commerce",
+  income: "25K-75K",
+  sourceOfIncome: "Salary",
+  awareOfFinancialMarkets: true,
+  riskAppetite: 8,
+  capitalRange: "25K-50K",
+};
 
 const Index = () => {
-  const [profile, setProfile] = useState<InvestorProfile>({
-    name: "",
-    age: 30,
-    educationBackground: "Commerce",
-    income: "25K-75K",
-    sourceOfIncome: "Salary",
-    awareOfFinancialMarkets: true,
-    riskAppetite: 8,
-    capitalRange: "25K-50K",
-  });
+  const [profile, setProfile] = useState<InvestorProfile>(DEFAULT_PROFILE);
 
-  const result = useMemo(() => computeInvestment(profile), [profile]);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [calculatedResult, setCalculatedResult] =
+    useState<InvestmentResult | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const prevProfileRef = useRef<InvestorProfile>(profile);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCalculate = () => {
+    setIsCalculating(true);
+    setIsModalOpen(false); // Close any open modal before calculation
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    // Simulate calculation delay for better UX
+    timeoutRef.current = setTimeout(() => {
+      const result = computeInvestment(profile);
+      setCalculatedResult(result);
+      setIsCalculating(false);
+      setIsModalOpen(true); // Open modal when calculation completes
+      timeoutRef.current = null;
+    }, 800); // 0.8 second delay to show loading animation
+  };
+
+  const handleReset = () => {
+    setCalculatedResult(null);
+    setIsModalOpen(false);
+    setIsCalculating(false);
+    setProfile(DEFAULT_PROFILE);
+
+    // Clear any pending timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  const handleProfileChange = useCallback((newProfile: InvestorProfile) => {
+    setProfile(newProfile);
+    // Note: Reset logic moved to useEffect below to prevent interference with user input
+  }, []);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  // Effect to reset results when relevant profile fields change (excluding name)
+  useEffect(() => {
+    if (!calculatedResult) {
+      prevProfileRef.current = profile;
+      return;
+    }
+
+    // Check if any calculation-relevant fields changed (excluding name)
+    const prev = prevProfileRef.current;
+    const relevantFields: (keyof InvestorProfile)[] = [
+      "age",
+      "educationBackground",
+      "income",
+      "sourceOfIncome",
+      "awareOfFinancialMarkets",
+      "riskAppetite",
+      "capitalRange",
+    ];
+
+    const hasRelevantChange = relevantFields.some(
+      (field) => profile[field] !== prev[field],
+    );
+
+    if (hasRelevantChange) {
+      setCalculatedResult(null);
+      setIsModalOpen(false);
+    }
+
+    prevProfileRef.current = profile;
+  }, [profile, calculatedResult]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const result = calculatedResult;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container max-w-7xl py-4 flex items-center gap-3">
-          <img src={logo} alt="finformatics logo" className="h-10 w-10" />
-          <div>
-            <h1 className="text-xl font-display font-bold text-foreground">finformatics</h1>
-            <p className="text-xs text-muted-foreground tracking-wide uppercase">
-              Predictive Modeling for Retail Wealth Diversification
-            </p>
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:font-semibold"
+      >
+        Skip to main content
+      </a>
+
+      {/* Enhanced Header with Gradient */}
+      <header className="border-b brand-gradient text-white">
+        <div className="container max-w-7xl py-4 sm:py-6 px-4 sm:px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-sm">
+                <img
+                  src={logo}
+                  alt="finformatics logo"
+                  className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
+                />
+              </div>
+              <div className="max-w-[calc(100%-60px)]">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold truncate">
+                    finformatics
+                  </h1>
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300 flex-shrink-0" />
+                </div>
+                <p className="text-xs sm:text-sm text-white/90 tracking-wide uppercase mt-0.5 sm:mt-1 line-clamp-1">
+                  Predictive Modeling for Retail Wealth Diversification
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:block bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2">
+                <p className="text-xs sm:text-sm font-medium">
+                  Intelligent Investment Advisory
+                </p>
+              </div>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="container max-w-7xl py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Investor Details */}
-          <div>
-            <Card className="animate-fade-in lg:sticky lg:top-8">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
-                  <User className="h-6 w-6 text-primary" />
-                  Investor Details
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="container max-w-7xl py-6 sm:py-8 px-4 sm:px-6"
+      >
+        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 sm:gap-8">
+          {/* Left Column - Full Form (Split internally) */}
+          <div className="lg:col-span-2">
+            <Card className="animate-fade-in shadow-lg border-primary/10">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                  <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  Investor Profile
                 </CardTitle>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Complete your financial profile (use tabs on mobile)
+                </p>
               </CardHeader>
               <CardContent>
-                <InvestorForm profile={profile} onChange={setProfile} />
+                <InvestorForm
+                  profile={profile}
+                  onChange={handleProfileChange}
+                />
+
+                {/* Calculate Button */}
+                <div className="pt-6 sm:pt-8 mt-4 sm:mt-6 border-t">
+                  <Button
+                    onClick={handleCalculate}
+                    disabled={isCalculating}
+                    className="w-full py-4 sm:py-6 text-base sm:text-lg font-semibold brand-gradient hover:opacity-90 transition-opacity text-white shadow-lg hover:shadow-xl min-h-[56px] sm:min-h-[64px]"
+                    size="lg"
+                  >
+                    {isCalculating ? (
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="h-6 w-6">
+                          <Lottie
+                            animationData={loadingAnimation}
+                            loop={true}
+                            style={{ height: 24, width: 24 }}
+                          />
+                        </div>
+                        <span>Calculating Investment Strategy...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-3">
+                        <Calculator className="h-6 w-6" />
+                        <span>Calculate Investment Strategy</span>
+                      </div>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Reset Button */}
+                {result && (
+                  <div className="pt-4">
+                    <Button
+                      onClick={handleReset}
+                      variant="outline"
+                      className="w-full py-3 sm:py-2"
+                      disabled={isCalculating}
+                    >
+                      Reset & Start Over
+                    </Button>
+                  </div>
+                )}
+
+                {/* Status Message */}
+                {!result && !isCalculating && (
+                  <div className="rounded-lg bg-muted/30 p-3 sm:p-4 border border-dashed mt-4 sm:mt-6">
+                    <p className="text-xs sm:text-sm text-center text-muted-foreground">
+                      Complete all fields and click "Calculate Investment
+                      Strategy" to generate personalized recommendations in a
+                      pop-up modal.
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Column - Results */}
-          <div className="space-y-8">
-            {/* Risk Analysis */}
-            <Card className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
-                  <Shield className="h-6 w-6 text-primary" />
-                  Risk Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Expected Annual Return (%)</p>
-                    <p className="text-4xl font-display font-bold text-foreground">{result.expectedReturn}</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Investor Category</p>
-                    <p className="text-lg font-semibold text-foreground">{result.category}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Investment Recommendation */}
-            <Card className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
-                  <TrendingUp className="h-6 w-6 text-primary" />
-                  Investment Recommendation
+          {/* Right Column - Information Panel */}
+          <div className="mt-6 sm:mt-0">
+            <Card className="animate-fade-in shadow-lg border-primary/10 h-full">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                  <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  How It Works
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Recommended Asset Allocation</h3>
-                  <ul className="space-y-2">
-                    {result.allocation.map((item, i) => (
-                      <li key={i} className="flex items-center justify-between text-foreground">
-                        <span className="flex items-center gap-3">
-                          <span
-                            className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: item.color }}
-                          />
-                          {item.name}: {item.percentage}%
-                        </span>
-                        <span className="text-sm font-semibold text-muted-foreground">
-                          ₹{item.amount?.toLocaleString("en-IN")}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
+                      <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
+                        Risk Assessment
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                        Your age, risk appetite, and market awareness determine
+                        your investor category and expected returns.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
+                      <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
+                        Asset Allocation
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                        Based on your risk profile, we recommend a diversified
+                        mix of Indian market instruments.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
+                      <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
+                        Investment Amount
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                        Suggested investment ranges are tailored to your capital
+                        availability and risk tolerance.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="rounded-lg bg-info p-4">
-                  <p className="text-sm text-info-foreground">{result.strategy}</p>
-                </div>
-
-                <AllocationChart data={result.allocation} title="Recommended Indian Market Asset Allocation" />
-              </CardContent>
-            </Card>
-
-            {/* Suggested Investment */}
-            <Card className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
-                  <DollarSign className="h-6 w-6 text-primary" />
-                  Suggested Investment Amount
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-muted-foreground">
-                    Suggested investment:{" "}
-                    <span className="text-2xl font-bold text-foreground">
-                      ₹{result.suggestedInvestment.toLocaleString("en-IN")}
-                    </span>
+                <div className="rounded-lg bg-info/20 p-3 sm:p-4 border border-info/30">
+                  <h4 className="font-semibold text-info-foreground text-sm sm:text-base mb-1.5 sm:mb-2">
+                    Real-time Calculation
+                  </h4>
+                  <p className="text-xs sm:text-sm text-info-foreground">
+                    Click the calculate button to see personalized
+                    recommendations in a detailed pop-up modal. No need to
+                    scroll!
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Range: ₹{result.investmentRange[0].toLocaleString("en-IN")} – ₹
-                    {result.investmentRange[1].toLocaleString("en-IN")}
-                  </p>
                 </div>
 
-                <div className="rounded-lg bg-warning/15 border border-warning/30 p-4">
-                  <p className="text-sm text-warning-foreground">
-                    Disclaimer: This model is for academic purposes only and does not constitute financial advice.
-                  </p>
-                </div>
+                {result && (
+                  <div className="rounded-lg bg-primary/10 p-3 sm:p-4 border border-primary/20">
+                    <h4 className="font-semibold text-foreground text-sm sm:text-base mb-1.5 sm:mb-2">
+                      Results Ready
+                    </h4>
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                      Your investment strategy has been calculated. Click below
+                      to view.
+                    </p>
+                    <Button
+                      onClick={() => setIsModalOpen(true)}
+                      className="w-full py-2 sm:py-1.5"
+                      size="sm"
+                    >
+                      View Results Again
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
         </div>
       </main>
+
+      {/* Results Modal */}
+      {result && (
+        <ResultsModal
+          result={result}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   );
 };
