@@ -16,6 +16,8 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  Lightbulb,
+  PieChart,
 } from "lucide-react";
 import type { InvestmentResult } from "@/lib/investment-model";
 import { useState } from "react";
@@ -73,7 +75,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
-                    <TrendingUp className="h-5 w-5 text-primary" />
+                    <PieChart className="h-5 w-5 text-primary" />
                     Asset Allocation
                   </CardTitle>
                 </CardHeader>
@@ -99,7 +101,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
                               style={{ backgroundColor: item.color }}
                             />
                             <span className="text-xs sm:text-sm md:text-base">
-                              {item.name}: {item.percentage}%
+                              {item.name}: {item.percentage.toFixed(2)}%
                             </span>
                           </span>
                           <span className="text-xs sm:text-sm font-semibold text-muted-foreground pl-7 sm:pl-0">
@@ -174,7 +176,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
-                    <Shield className="h-5 w-5 text-primary" />
+                    <Lightbulb className="h-5 w-5 text-primary" />
                     Why This Recommendation?
                   </CardTitle>
                 </CardHeader>

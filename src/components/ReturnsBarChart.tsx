@@ -32,6 +32,14 @@ export function ReturnsBarChart({
   // Custom tooltip
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      // Find the correct payload items by dataKey
+      const annualReturnPayload = payload.find(
+        (p: any) => p.dataKey === "annualReturn",
+      );
+      const cumulativeValuePayload = payload.find(
+        (p: any) => p.dataKey === "cumulativeValue",
+      );
+
       return (
         <div className="bg-white dark:bg-gray-900 p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
           <p className="font-semibold text-foreground mb-2">{label}</p>
@@ -41,7 +49,7 @@ export function ReturnsBarChart({
                 Annual Return:
               </span>{" "}
               <span className="text-foreground">
-                {payload[0].value.toFixed(1)}%
+                {annualReturnPayload?.value?.toFixed(1)}%
               </span>
             </p>
             <p className="text-sm">
@@ -49,7 +57,7 @@ export function ReturnsBarChart({
                 Cumulative Value:
               </span>{" "}
               <span className="text-foreground">
-                ₹{payload[1].value.toLocaleString("en-IN")}
+                ₹{cumulativeValuePayload?.value?.toLocaleString("en-IN")}
               </span>
             </p>
             {initialInvestment && (

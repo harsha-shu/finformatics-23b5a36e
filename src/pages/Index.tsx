@@ -23,13 +23,13 @@ import { Button } from "@/components/ui/button";
 
 const DEFAULT_PROFILE: InvestorProfile = {
   name: "",
-  age: 30,
+  age: 18,
   educationBackground: "Commerce",
-  income: "25K-75K",
+  income: "0-25K",
   sourceOfIncome: "Salary",
-  awareOfFinancialMarkets: true,
-  riskAppetite: 8,
-  capitalRange: "25K-50K",
+  awareOfFinancialMarkets: false,
+  riskAppetite: 5,
+  capitalRange: "0-25K",
 };
 
 const Index = () => {
@@ -161,8 +161,8 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:block bg-primary/10 dark:bg-primary/20 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2">
-                <p className="text-xs sm:text-sm font-medium text-primary dark:text-primary-foreground">
+              <div className="hidden sm:block bg-white/20 dark:bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 border border-white/30">
+                <p className="text-xs sm:text-sm font-medium text-white">
                   Intelligent Investment Advisory
                 </p>
               </div>

@@ -98,12 +98,11 @@ describe("Index Page", () => {
     expect(badgeContainer).toBeInTheDocument();
 
     // Check that badge uses theme-aware background classes
-    expect(badgeContainer?.className).toContain("bg-primary/10");
-    expect(badgeContainer?.className).toContain("dark:bg-primary/20");
+    expect(badgeContainer?.className).toContain("bg-white/20");
+    expect(badgeContainer?.className).toContain("dark:bg-white/10");
 
-    // Check that text uses theme-aware text color classes
-    expect(badgeText.className).toContain("text-primary");
-    expect(badgeText.className).toContain("dark:text-primary-foreground");
+    // Check that text uses white color for visibility on gradient
+    expect(badgeText.className).toContain("text-white");
   });
 
   it("has text shadow on header text for better contrast in light mode", () => {

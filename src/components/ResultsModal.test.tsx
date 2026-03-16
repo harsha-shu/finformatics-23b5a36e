@@ -104,6 +104,10 @@ vi.mock("lucide-react", () => ({
   Shield: vi.fn(() => <span data-testid="shield-icon" />),
   DollarSign: vi.fn(() => <span data-testid="dollar-sign-icon" />),
   X: vi.fn(() => <span data-testid="x-icon" />),
+  Lightbulb: vi.fn(() => <span data-testid="lightbulb-icon" />),
+  PieChart: vi.fn(() => <span data-testid="pie-chart-icon" />),
+  ChevronDown: vi.fn(() => <span data-testid="chevron-down-icon" />),
+  ChevronUp: vi.fn(() => <span data-testid="chevron-up-icon" />),
 }));
 
 describe("ResultsModal", () => {
@@ -220,10 +224,12 @@ describe("ResultsModal", () => {
 
     // Check allocation items
     mockResult.allocation.forEach((item) => {
+      
       // Escape regex special characters in the name and create flexible pattern
       const escapedName = item.name.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+      const percentageFormatted = item.percentage.toFixed(2).replace('.', '\\.');
       const pattern = new RegExp(
-        `${escapedName}\\s*:\\s*${item.percentage}\\s*%`,
+        `${escapedName}\\s*:\\s*${percentageFormatted}\\s*%`,
       );
       expect(screen.getByText(pattern)).toBeInTheDocument();
       expect(

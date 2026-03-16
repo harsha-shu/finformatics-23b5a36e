@@ -25,13 +25,20 @@ export function AllocationChart({ data, title }: AllocationChartProps) {
               outerRadius={110}
               dataKey="percentage"
               nameKey="name"
-              label={({ percentage }) => `${percentage}%`}
+              label={({ percentage, x, y }) => (
+                <text
+                  x={x}
+                  y={y}
+                  fill="hsl(var(--foreground))"
+                  fontSize="0.875rem"
+                  fontWeight="500"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
+                  {percentage.toFixed(2)}%
+                </text>
+              )}
               labelLine={false}
-              labelStyle={{
-                fill: "hsl(var(--foreground))",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-              }}
               strokeWidth={2}
               stroke="hsl(var(--border))"
             >
@@ -40,7 +47,7 @@ export function AllocationChart({ data, title }: AllocationChartProps) {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value: number) => `${value}%`}
+              formatter={(value: number) => `${value.toFixed(2)}%`}
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
                   return (
@@ -49,7 +56,7 @@ export function AllocationChart({ data, title }: AllocationChartProps) {
                         {payload[0].name}
                       </p>
                       <p className="text-sm text-foreground">
-                        {payload[0].value}%
+                        {payload[0].value.toFixed(2)}%
                       </p>
                     </div>
                   );

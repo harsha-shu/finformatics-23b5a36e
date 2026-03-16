@@ -229,10 +229,10 @@ function getAllocationAndStrategy(
         0,
       );
 
-      // Ensure we don't reduce equity below 0
+      // Ensure we don't reduce equity below 0 and avoid division by zero
       const cryptoAllocation = Math.min(5, totalEquityPercentage);
 
-      if (cryptoAllocation > 0) {
+      if (cryptoAllocation > 0 && totalEquityPercentage > 0) {
         // Reduce each equity item proportionally
         equityItems.forEach((item) => {
           const itemIndex = finalAllocation.findIndex((i) => i === item);
@@ -259,13 +259,14 @@ function getAllocationAndStrategy(
     (sum, item) => sum + item.percentage,
     0,
   );
-  if (finalTotal !== 100) {
+  // Use tolerance for floating point errors
+  if (Math.abs(finalTotal - 100) > 0.001) {
     const diff = 100 - finalTotal;
     const equityIndex = finalAllocation.findIndex((item) =>
       item.name.includes("Equity"),
     );
     if (equityIndex !== -1) {
-      finalAllocation[equityIndex].percentage += diff;
+      finalAllocation[equityIndex].percentage = Math.round((finalAllocation[equityIndex].percentage + diff) * 100) / 100;
     }
   }
 

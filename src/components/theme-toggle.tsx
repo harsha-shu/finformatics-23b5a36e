@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Settings } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,9 +34,7 @@ export function ThemeToggle() {
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          <span className="mr-2 h-4 w-4 flex items-center justify-center text-foreground">
-            ⚙️
-          </span>
+          <Settings className="mr-2 h-4 w-4 text-foreground" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

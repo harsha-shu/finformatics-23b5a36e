@@ -88,17 +88,25 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
   const handleAgeChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      update({ age: Math.max(1, parseInt(e.target.value) || 1) });
+      update({ age: Math.max(18, parseInt(e.target.value) || 18) });
     },
     [update],
   );
 
   const handleAgeDecrement = useCallback(() => {
-    update({ age: Math.max(1, profile.age - 1) });
+    update({ age: Math.max(18, profile.age - 1) });
   }, [profile.age, update]);
 
   const handleAgeIncrement = useCallback(() => {
     update({ age: Math.min(120, profile.age + 1) });
+  }, [profile.age, update]);
+
+  const handleAgeBlur = useCallback(() => {
+    // Clamp age to valid range on blur
+    const clampedAge = Math.max(18, Math.min(120, profile.age));
+    if (clampedAge !== profile.age) {
+      update({ age: clampedAge });
+    }
   }, [profile.age, update]);
 
   const handleEducationChange = useCallback(
@@ -167,6 +175,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
               type="number"
               value={profile.age}
               onChange={handleAgeChange}
+              onBlur={handleAgeBlur}
               className="bg-muted/50 flex-1"
               min="18"
               max="120"
