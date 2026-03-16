@@ -214,7 +214,7 @@ function getAllocationAndStrategy(
   }));
 
   // Add crypto allocation if eligible (reallocates from equity)
-  let finalAllocation = normalizedAllocation;
+  const finalAllocation = normalizedAllocation;
   let cryptoStrategy = "";
 
   if (includeCrypto) {

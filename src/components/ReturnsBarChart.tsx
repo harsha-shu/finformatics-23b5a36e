@@ -30,14 +30,17 @@ export function ReturnsBarChart({
   }));
 
   // Custom tooltip
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       // Find the correct payload items by dataKey
       const annualReturnPayload = payload.find(
-        (p: any) => p.dataKey === "annualReturn",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (p: any) => p.dataKey === "annualReturn",
       );
       const cumulativeValuePayload = payload.find(
-        (p: any) => p.dataKey === "cumulativeValue",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (p: any) => p.dataKey === "cumulativeValue",
       );
 
       return (
