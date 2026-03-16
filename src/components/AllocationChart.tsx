@@ -27,8 +27,13 @@ export function AllocationChart({ data, title }: AllocationChartProps) {
               nameKey="name"
               label={({ percentage }) => `${percentage}%`}
               labelLine={false}
+              labelStyle={{
+                fill: "hsl(var(--foreground))",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+              }}
               strokeWidth={2}
-              stroke="hsl(var(--card))"
+              stroke="hsl(var(--border))"
             >
               {data.map((entry, index) => (
                 <Cell key={index} fill={entry.color} />
@@ -36,11 +41,20 @@ export function AllocationChart({ data, title }: AllocationChartProps) {
             </Pie>
             <Tooltip
               formatter={(value: number) => `${value}%`}
-              contentStyle={{
-                background: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "var(--radius)",
-                fontSize: "0.875rem",
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+                      <p className="font-medium text-foreground">
+                        {payload[0].name}
+                      </p>
+                      <p className="text-sm text-foreground">
+                        {payload[0].value}%
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
               }}
             />
           </PieChart>

@@ -94,6 +94,9 @@
         --info: 211 50% 18%;
         --info-foreground: 211 60% 75%;
 
+        --warning: 43 96% 58%;
+        --warning-foreground: 43 96% 95%;
+
         --sidebar-background: 224 35% 10%;
         --sidebar-foreground: 210 25% 95%;
         --sidebar-primary: 211 86% 46%;
@@ -122,4 +125,33 @@
     h6 {
         @apply font-display;
     }
+}
+
+@layer utilities {
+    .text-shadow-sm {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .text-shadow-md {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ASCII pattern background with financial symbols */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.08;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3EBull%3C/text%3E%3Ctext x='60' y='40' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='110' y='60' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3E$%3C/text%3E%3Ctext x='160' y='80' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='10' y='120' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3E$%3C/text%3E%3Ctext x='110' y='160' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='160' y='180' font-family='monospace' font-size='16' fill='hsl(var(--foreground))' opacity='0.15'%3EBull%3C/text%3E%3C/svg%3E");
+    background-size: 200px 200px;
 }

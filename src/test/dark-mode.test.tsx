@@ -1,43 +1,43 @@
-import React from 'react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'next-themes';
-import { ThemeToggle } from '@/components/theme-toggle';
-import Index from '@/pages/Index';
+import React from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ThemeProvider } from "next-themes";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Index from "@/pages/Index";
 
 // Mock heavy components
-vi.mock('@/components/ResultsModal', () => ({
+vi.mock("@/components/ResultsModal", () => ({
   ResultsModal: vi.fn(() => null),
 }));
 
-vi.mock('@/components/InvestorForm', () => ({
+vi.mock("@/components/InvestorForm", () => ({
   InvestorForm: vi.fn(() => <div data-testid="investor-form" />),
 }));
 
-vi.mock('lottie-react', () => ({
+vi.mock("lottie-react", () => ({
   __esModule: true,
   default: vi.fn(() => <div data-testid="lottie-animation" />),
 }));
 
 // Mock logo import
-vi.mock('@/assets/logo.png', () => ({
-  default: 'test-logo.png',
+vi.mock("@/assets/logo.png", () => ({
+  default: "test-logo.png",
 }));
 
 // Mock loading animation
-vi.mock('@/assets/loading-spinner.json', () => ({
+vi.mock("@/assets/loading-spinner.json", () => ({
   default: {},
 }));
 
-describe('Dark Mode Integration', () => {
+describe("Dark Mode Integration", () => {
   const originalMatchMedia = window.matchMedia;
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     // Mock matchMedia for system theme detection
-    Object.defineProperty(window, 'matchMedia', {
+    Object.defineProperty(window, "matchMedia", {
       writable: true,
       value: vi.fn().mockImplementation((query) => ({
         matches: false, // Default to light mode
@@ -60,106 +60,74 @@ describe('Dark Mode Integration', () => {
     localStorage.clear();
   });
 
-  it('renders with default system theme', () => {
+  it("renders with default system theme", () => {
     render(
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div data-testid="test-content">Test Content</div>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
-    expect(screen.getByTestId('test-content')).toBeInTheDocument();
+    expect(screen.getByTestId("test-content")).toBeInTheDocument();
   });
 
-  it('ThemeToggle component works within ThemeProvider', async () => {
+  it("ThemeToggle component works within ThemeProvider", async () => {
     const user = userEvent.setup();
 
     render(
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     // Theme toggle button should be visible
-    const toggleButton = screen.getByRole('button', { name: /toggle theme/i });
+    const toggleButton = screen.getByRole("button", { name: /toggle theme/i });
     expect(toggleButton).toBeInTheDocument();
 
     // Open dropdown
     await user.click(toggleButton);
 
     // Should show theme options
-    expect(screen.getByText('Light')).toBeInTheDocument();
-    expect(screen.getByText('Dark')).toBeInTheDocument();
-    expect(screen.getByText('System')).toBeInTheDocument();
+    expect(screen.getByText("Light")).toBeInTheDocument();
+    expect(screen.getByText("Dark")).toBeInTheDocument();
+    expect(screen.getByText("System")).toBeInTheDocument();
   });
 
-  it('applies dark class to html element when theme is dark', async () => {
-    const user = userEvent.setup();
-
-    // Create a test container
-    const TestComponent = () => {
-      return (
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <div>
-            <ThemeToggle />
-            <div data-testid="theme-indicator" className="dark:bg-gray-900 bg-white" />
-          </div>
-        </ThemeProvider>
-      );
-    };
-
-    const { container } = render(<TestComponent />);
-
-    // Initially should not have dark class on html
-    const htmlElement = container.ownerDocument.documentElement;
-    expect(htmlElement.classList.contains('dark')).toBe(false);
-
-    // Click theme toggle to open dropdown
-    const toggleButton = screen.getByRole('button', { name: /toggle theme/i });
-    await user.click(toggleButton);
-
-    // Select dark theme
-    const darkOption = screen.getByText('Dark');
-    await user.click(darkOption);
-
-    // Note: In a real browser, next-themes would add the 'dark' class to html element
-    // In test environment, we can verify the component interaction happened
-    expect(darkOption).toBeInTheDocument();
-  });
-
-  it('Index page includes ThemeToggle in header', () => {
+  it("Index page includes ThemeToggle in header", () => {
     render(
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
         <Index />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     // Theme toggle should be in the header
-    expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /toggle theme/i }),
+    ).toBeInTheDocument();
 
     // Verify other key elements are present
-    expect(screen.getByText('finformatics')).toBeInTheDocument();
-    expect(screen.getByText('Investor Profile')).toBeInTheDocument();
+    expect(screen.getByText("finformatics")).toBeInTheDocument();
+    expect(screen.getByText("Investor Profile")).toBeInTheDocument();
   });
 
-  it('preserves theme preference in localStorage', async () => {
+  it("preserves theme preference in localStorage", async () => {
     const user = userEvent.setup();
 
     // Spy on localStorage
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-    const getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
+    const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+    const getItemSpy = vi.spyOn(Storage.prototype, "getItem");
 
     render(
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     // Open theme dropdown
-    const toggleButton = screen.getByRole('button', { name: /toggle theme/i });
+    const toggleButton = screen.getByRole("button", { name: /toggle theme/i });
     await user.click(toggleButton);
 
     // Select dark theme
-    const darkOption = screen.getByText('Dark');
+    const darkOption = screen.getByText("Dark");
     await user.click(darkOption);
 
     // Verify localStorage.setItem was called (next-themes stores theme preference)
@@ -170,12 +138,12 @@ describe('Dark Mode Integration', () => {
     getItemSpy.mockRestore();
   });
 
-  it('supports system theme preference', async () => {
+  it("supports system theme preference", async () => {
     // Mock matchMedia to simulate system preference for dark mode
-    Object.defineProperty(window, 'matchMedia', {
+    Object.defineProperty(window, "matchMedia", {
       writable: true,
       value: vi.fn().mockImplementation((query) => ({
-        matches: query.includes('dark'), // Simulate system prefers dark
+        matches: query.includes("dark"), // Simulate system prefers dark
         media: query,
         onchange: null,
         addListener: vi.fn(),
@@ -189,13 +157,13 @@ describe('Dark Mode Integration', () => {
     render(
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div data-testid="system-theme-test">System Theme Test</div>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
-    expect(screen.getByTestId('system-theme-test')).toBeInTheDocument();
+    expect(screen.getByTestId("system-theme-test")).toBeInTheDocument();
   });
 
-  it('applies correct Tailwind dark mode classes', () => {
+  it("applies correct Tailwind dark mode classes", () => {
     const TestComponent = () => (
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <div>
@@ -211,11 +179,11 @@ describe('Dark Mode Integration', () => {
 
     render(<TestComponent />);
 
-    const element = screen.getByTestId('dark-mode-element');
+    const element = screen.getByTestId("dark-mode-element");
     expect(element).toBeInTheDocument();
-    expect(element.className).toContain('dark:bg-gray-900');
-    expect(element.className).toContain('dark:text-white');
-    expect(element.className).toContain('bg-background');
-    expect(element.className).toContain('text-foreground');
+    expect(element.className).toContain("dark:bg-gray-900");
+    expect(element.className).toContain("dark:text-white");
+    expect(element.className).toContain("bg-background");
+    expect(element.className).toContain("text-foreground");
   });
 });

@@ -141,28 +141,28 @@ const Index = () => {
         <div className="container max-w-7xl py-4 sm:py-6 px-4 sm:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-sm">
+              <div className="bg-white/20 dark:bg-gray-900/20 p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-sm">
                 <img
                   src={logo}
                   alt="finformatics logo"
                   className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
                 />
               </div>
-              <div className="max-w-[calc(100%-60px)]">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold truncate">
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-shadow-md text-white">
                     finformatics
                   </h1>
                   <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300 flex-shrink-0" />
                 </div>
-                <p className="text-xs sm:text-sm text-white/90 tracking-wide uppercase mt-0.5 sm:mt-1 line-clamp-1">
+                <p className="text-xs sm:text-sm tracking-wide uppercase mt-0.5 sm:mt-1 text-shadow-md text-white">
                   Predictive Modeling for Retail Wealth Diversification
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:block bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2">
-                <p className="text-xs sm:text-sm font-medium">
+              <div className="hidden sm:block bg-primary/10 dark:bg-primary/20 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2">
+                <p className="text-xs sm:text-sm font-medium text-primary dark:text-primary-foreground">
                   Intelligent Investment Advisory
                 </p>
               </div>
@@ -175,14 +175,26 @@ const Index = () => {
       <main
         id="main-content"
         tabIndex={-1}
-        className="container max-w-7xl py-6 sm:py-8 px-4 sm:px-6"
+        className="container max-w-7xl py-6 sm:py-8 px-4 sm:px-6 pb-24 sm:pb-32"
       >
+        {/* Tool Description */}
+        <div className="mb-8 sm:mb-10 text-center">
+          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">
+            AI-powered investment advisory platform for personalized wealth
+            management
+          </p>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Get customized portfolio recommendations based on your financial
+            profile, risk tolerance, and market insights
+          </p>
+        </div>
+
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Left Column - Full Form (Split internally) */}
           <div className="lg:col-span-2">
             <Card className="animate-fade-in shadow-lg border-primary/10">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-foreground">
                   <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   Investor Profile
                 </CardTitle>
@@ -256,7 +268,7 @@ const Index = () => {
           <div className="mt-6 sm:mt-0">
             <Card className="animate-fade-in shadow-lg border-primary/10 h-full">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
                   <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   How It Works
                 </CardTitle>
@@ -341,6 +353,34 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* Floating Calculate Button for Mobile */}
+        <div className="lg:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+          <Button
+            onClick={handleCalculate}
+            disabled={isCalculating}
+            className="w-full py-4 text-lg font-semibold brand-gradient hover:opacity-90 transition-opacity text-white shadow-xl hover:shadow-2xl min-h-[56px]"
+            size="lg"
+          >
+            {isCalculating ? (
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-6 w-6">
+                  <Lottie
+                    animationData={loadingAnimation}
+                    loop={true}
+                    style={{ height: 24, width: 24 }}
+                  />
+                </div>
+                <span>Calculating...</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-3">
+                <Calculator className="h-6 w-6" />
+                <span>Calculate Strategy</span>
+              </div>
+            )}
+          </Button>
         </div>
       </main>
 

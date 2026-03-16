@@ -40,6 +40,14 @@ const educationOptions = [
   "B.Tech",
   "B.B.A / Hotel Management",
   "M.B.A / Ph.D.",
+  "Arts/Humanities",
+  "Science",
+  "Medicine",
+  "Law",
+  "CA/CS",
+  "Diploma",
+  "No Formal Education",
+  "Others",
 ];
 
 const incomeRanges = ["0-25K", "25K-75K", "75K-125K", "More than 125K"];
@@ -160,6 +168,9 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
               value={profile.age}
               onChange={handleAgeChange}
               className="bg-muted/50 flex-1"
+              min="18"
+              max="120"
+              step="1"
             />
             <Button
               variant="outline"
