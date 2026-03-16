@@ -17,7 +17,7 @@ const App = () => {
     const redirect = sessionStorage.redirect;
     delete sessionStorage.redirect;
     if (redirect && redirect !== location.pathname) {
-      history.replaceState(null, '', redirect);
+      history.replaceState(null, "", redirect);
     }
   }, []);
 
@@ -27,7 +27,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter basename="/finformatics-23b5a36e">
+          <BrowserRouter basename="/">
             <Routes>
               <Route path="/" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
