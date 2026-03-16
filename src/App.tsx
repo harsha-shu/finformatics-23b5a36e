@@ -27,7 +27,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter basename="/finformatics">
+          <BrowserRouter basename="/finformatics-23b5a36e">
             <Routes>
               <Route path="/" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

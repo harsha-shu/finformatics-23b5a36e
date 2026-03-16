@@ -260,7 +260,7 @@ ResultsModal (Display with charts)
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd finformatics
+cd finformatics-23b5a36e
 
 # Install dependencies
 npm install
