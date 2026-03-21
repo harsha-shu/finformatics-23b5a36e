@@ -175,6 +175,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
               type="number"
               value={profile.age}
               onChange={handleAgeChange}
+              onFocus={(e) => e.target.select()}  // NEW: Auto-select on focus
               onBlur={handleAgeBlur}
               className="bg-muted/50 flex-1"
               min="18"
