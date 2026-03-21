@@ -101,8 +101,8 @@ describe("Index Page", () => {
     expect(badgeContainer?.className).toContain("bg-white/20");
     expect(badgeContainer?.className).toContain("dark:bg-white/10");
 
-    // Check that text uses white color for visibility on gradient
-    expect(badgeText.className).toContain("text-white");
+    // Check that text uses foreground color for proper contrast in both modes
+    expect(badgeText.className).toContain("text-foreground");
   });
 
   it("has text shadow on header text for better contrast in light mode", () => {

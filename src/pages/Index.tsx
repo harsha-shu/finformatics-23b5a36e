@@ -161,7 +161,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="hidden sm:block border border-border rounded-md px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 dark:bg-white/10">
-                <p className="text-xs sm:text-sm font-medium text-white">
+                <p className="text-xs sm:text-sm font-medium text-foreground">
                   Intelligent Investment Advisory
                 </p>
               </div>
