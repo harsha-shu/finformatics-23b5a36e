@@ -150,18 +150,18 @@ const Index = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-foreground">
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-foreground text-shadow-md">
                     finformatics
                   </h1>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
+                <p className="text-xs sm:text-sm text-muted-foreground text-shadow-md mt-0.5 sm:mt-1">
                   Predictive Modeling for Retail Wealth Diversification
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:block border border-border rounded-md px-3 py-1.5 sm:px-4 sm:py-2 bg-card/50">
-                <p className="text-xs sm:text-sm font-medium text-foreground">
+              <div className="hidden sm:block border border-border rounded-md px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 dark:bg-white/10">
+                <p className="text-xs sm:text-sm font-medium text-white">
                   Intelligent Investment Advisory
                 </p>
               </div>
