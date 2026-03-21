@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,105 +6,109 @@
 
 @layer base {
     :root {
-        --background: 210 25% 98%;
-        --foreground: 224 35% 15%;
+        --background: 40 30% 98%;
+        --foreground: 220 25% 20%;
 
         --card: 0 0% 100%;
-        --card-foreground: 224 35% 15%;
+        --card-foreground: 220 25% 20%;
 
         --popover: 0 0% 100%;
-        --popover-foreground: 224 35% 15%;
+        --popover-foreground: 220 25% 20%;
 
-        --primary: 211 86% 36%;
+        --primary: 220 50% 30%;
         --primary-foreground: 0 0% 100%;
 
-        --secondary: 210 25% 94%;
-        --secondary-foreground: 224 35% 15%;
+        --secondary: 40 25% 94%;
+        --secondary-foreground: 220 25% 20%;
 
-        --muted: 210 20% 96%;
-        --muted-foreground: 215 20% 45%;
+        --muted: 40 20% 94%;
+        --muted-foreground: 220 20% 45%;
 
-        --accent: 168 84% 35%;
+        --accent: 15 70% 50%;
         --accent-foreground: 0 0% 100%;
 
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
 
-        --border: 214 32% 91%;
-        --input: 214 32% 91%;
-        --ring: 211 86% 36%;
+        --border: 40 20% 88%;
+        --input: 40 20% 88%;
+        --ring: 220 50% 30%;
 
-        --radius: 0.75rem;
+        --radius: 0.5rem;
 
-        --chart-blue: 211 86% 45%;
-        --chart-orange: 35 92% 55%;
-        --chart-green: 142 72% 46%;
-        --chart-teal: 168 84% 38%;
+        --chart-blue: 220 60% 50%;
+        --chart-orange: 25 85% 55%;
+        --chart-green: 142 60% 45%;
+        --chart-teal: 180 60% 45%;
+        --chart-purple: 280 60% 55%;
+        --chart-red: 350 70% 55%;
 
         --warning: 43 96% 48%;
         --warning-foreground: 43 96% 15%;
 
-        --info: 211 70% 95%;
-        --info-foreground: 211 60% 25%;
+        --info: 220 50% 96%;
+        --info-foreground: 220 50% 25%;
 
-        --sidebar-background: 210 20% 98%;
-        --sidebar-foreground: 215 25% 30%;
-        --sidebar-primary: 211 86% 36%;
+        --sidebar-background: 40 25% 96%;
+        --sidebar-foreground: 220 25% 25%;
+        --sidebar-primary: 220 50% 30%;
         --sidebar-primary-foreground: 0 0% 100%;
-        --sidebar-accent: 210 25% 94%;
-        --sidebar-accent-foreground: 224 35% 15%;
-        --sidebar-border: 214 20% 92%;
-        --sidebar-ring: 211 86% 45%;
+        --sidebar-accent: 40 25% 92%;
+        --sidebar-accent-foreground: 220 25% 20%;
+        --sidebar-border: 40 20% 88%;
+        --sidebar-ring: 220 50% 30%;
     }
 
     .dark {
-        --background: 224 35% 8%;
-        --foreground: 210 25% 98%;
+        --background: 220 25% 10%;
+        --foreground: 40 30% 95%;
 
-        --card: 224 35% 12%;
-        --card-foreground: 210 25% 98%;
+        --card: 220 25% 14%;
+        --card-foreground: 40 30% 95%;
 
-        --popover: 224 35% 12%;
-        --popover-foreground: 210 25% 98%;
+        --popover: 220 25% 14%;
+        --popover-foreground: 40 30% 95%;
 
-        --primary: 211 86% 46%;
+        --primary: 220 40% 60%;
         --primary-foreground: 0 0% 100%;
 
-        --secondary: 224 35% 16%;
-        --secondary-foreground: 210 25% 98%;
+        --secondary: 220 25% 18%;
+        --secondary-foreground: 40 30% 95%;
 
-        --muted: 224 35% 16%;
-        --muted-foreground: 215 20% 65%;
+        --muted: 220 25% 18%;
+        --muted-foreground: 40 20% 70%;
 
-        --accent: 168 84% 42%;
+        --accent: 15 80% 60%;
         --accent-foreground: 0 0% 100%;
 
         --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
+        --destructive-foreground: 40 30% 95%;
 
-        --border: 224 35% 20%;
-        --input: 224 35% 20%;
-        --ring: 211 86% 46%;
+        --border: 220 25% 25%;
+        --input: 220 25% 25%;
+        --ring: 220 40% 60%;
 
-        --chart-blue: 211 86% 52%;
-        --chart-orange: 35 92% 62%;
-        --chart-green: 142 72% 54%;
-        --chart-teal: 168 84% 45%;
+        --chart-blue: 220 60% 60%;
+        --chart-orange: 25 85% 65%;
+        --chart-green: 142 60% 55%;
+        --chart-teal: 180 60% 55%;
+        --chart-purple: 280 60% 65%;
+        --chart-red: 350 70% 65%;
 
-        --info: 211 50% 18%;
-        --info-foreground: 211 60% 75%;
+        --info: 220 40% 20%;
+        --info-foreground: 220 40% 80%;
 
         --warning: 43 96% 58%;
         --warning-foreground: 43 96% 95%;
 
-        --sidebar-background: 224 35% 10%;
-        --sidebar-foreground: 210 25% 95%;
-        --sidebar-primary: 211 86% 46%;
+        --sidebar-background: 220 25% 12%;
+        --sidebar-foreground: 40 30% 90%;
+        --sidebar-primary: 220 40% 60%;
         --sidebar-primary-foreground: 0 0% 100%;
-        --sidebar-accent: 224 35% 16%;
-        --sidebar-accent-foreground: 210 25% 95%;
-        --sidebar-border: 224 35% 16%;
-        --sidebar-ring: 211 86% 46%;
+        --sidebar-accent: 220 25% 18%;
+        --sidebar-accent-foreground: 40 30% 90%;
+        --sidebar-border: 220 25% 20%;
+        --sidebar-ring: 220 40% 60%;
     }
 }
 
@@ -139,24 +143,17 @@
     .text-shadow-lg {
         text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     }
+
+    .animation-delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .animation-delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .animation-delay-300 {
+        animation-delay: 300ms;
+    }
 }
 
-/* ASCII pattern background with financial symbols */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.08;
-    z-index: -1;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3EBull%3C/text%3E%3Ctext x='60' y='40' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='110' y='60' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3E$%3C/text%3E%3Ctext x='160' y='80' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='10' y='120' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3E$%3C/text%3E%3Ctext x='110' y='160' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='160' y='180' font-family='monospace' font-size='16' fill='%23334155' opacity='0.15'%3EBull%3C/text%3E%3C/svg%3E");
-    background-size: 200px 200px;
-}
-
-/* Dark mode ASCII background */
-.dark body::before {
-    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3EBull%3C/text%3E%3Ctext x='60' y='40' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='110' y='60' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3E$%3C/text%3E%3Ctext x='160' y='80' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='10' y='120' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3E₹%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3E$%3C/text%3E%3Ctext x='110' y='160' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3EBear%3C/text%3E%3Ctext x='160' y='180' font-family='monospace' font-size='16' fill='%23e2e8f0' opacity='0.15'%3EBull%3C/text%3E%3C/svg%3E");
-}

@@ -56,9 +56,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
             {/* Left Column - Charts */}
             <div className="space-y-6">
               {/* Projected Returns Bar Chart */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     Projected Returns (5 Years)
                   </CardTitle>
@@ -72,9 +72,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Asset Allocation Chart */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <PieChart className="h-5 w-5 text-primary" />
                     Asset Allocation
                   </CardTitle>
@@ -118,9 +118,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
             {/* Right Column - Information */}
             <div className="space-y-6">
               {/* Suggested Investment */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <DollarSign className="h-5 w-5 text-primary" />
                     Suggested Investment
                   </CardTitle>
@@ -143,9 +143,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Risk Analysis */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <Shield className="h-5 w-5 text-primary" />
                     Risk Analysis
                   </CardTitle>
@@ -173,9 +173,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Why This Recommendation? - Expandable Section */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <Lightbulb className="h-5 w-5 text-primary" />
                     Why This Recommendation?
                   </CardTitle>
@@ -241,9 +241,9 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Disclaimer */}
-              <Card className="shadow-lg">
+              <Card className="border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg sm:text-xl text-foreground">
+                  <CardTitle className="text-lg sm:text-xl font-display font-semibold text-foreground">
                     Important Disclaimer
                   </CardTitle>
                 </CardHeader>
@@ -263,7 +263,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               <div className="pt-2">
                 <Button
                   onClick={onClose}
-                  className="w-full py-3 sm:py-2 text-base sm:text-sm"
+                  className="w-full py-3 sm:py-2 text-base sm:text-sm bg-primary hover:bg-primary/90 transition-colors"
                 >
                   Close Results
                 </Button>

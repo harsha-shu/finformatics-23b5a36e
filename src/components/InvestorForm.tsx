@@ -158,7 +158,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
       <div className="space-y-4 sm:space-y-6">
         {/* Name */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Name</Label>
+          <Label className="text-sm font-medium text-foreground">Name</Label>
           <Input
             value={profile.name}
             onChange={handleNameChange}
@@ -169,7 +169,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
         {/* Age */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Age</Label>
+          <Label className="text-sm font-medium text-foreground">Age</Label>
           <div className="flex items-center gap-2">
             <Input
               type="number"
@@ -204,7 +204,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
         {/* Education Background */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">
+          <Label className="text-sm font-medium text-foreground">
             Education Background
           </Label>
           <Select
@@ -226,7 +226,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
         {/* Annual Income */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Annual Income</Label>
+          <Label className="text-sm font-medium text-foreground">Annual Income</Label>
           <Select value={profile.income} onValueChange={handleIncomeChange}>
             <SelectTrigger className="bg-muted/50">
               <SelectValue />
@@ -262,7 +262,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
       <div className="space-y-4 sm:space-y-6">
         {/* Source of Income */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">
+          <Label className="text-sm font-medium text-foreground">
             Source of Income
           </Label>
           <Select
@@ -284,7 +284,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
         {/* Aware of Financial Markets */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">
+          <Label className="text-sm font-medium text-foreground">
             Aware of Financial Markets
           </Label>
           <RadioGroup
@@ -311,7 +311,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <Label className="text-sm text-muted-foreground">
+              <Label className="text-sm font-medium text-foreground">
                 Scale of Risk (0–20)
               </Label>
               <Tooltip>
@@ -354,7 +354,7 @@ export function InvestorForm({ profile, onChange }: InvestorFormProps) {
 
         {/* Capital Range */}
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">
+          <Label className="text-sm font-medium text-foreground">
             Range of Capital
           </Label>
           <Select

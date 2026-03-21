@@ -136,33 +136,32 @@ const Index = () => {
         Skip to main content
       </a>
 
-      {/* Enhanced Header with Gradient */}
-      <header className="border-b brand-gradient text-white">
-        <div className="container max-w-7xl py-4 sm:py-6 px-4 sm:px-6">
+      {/* Editorial Header */}
+      <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container max-w-7xl py-3 sm:py-4 px-4 sm:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 dark:bg-gray-900/20 p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-sm">
+              <div className="bg-primary/10 p-1.5 sm:p-2 rounded-md">
                 <img
                   src={logo}
                   alt="finformatics logo"
-                  className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
+                  className="h-7 w-7 sm:h-9 sm:w-9 md:h-10 md:w-10"
                 />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-shadow-md text-white">
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-display font-bold text-foreground">
                     finformatics
                   </h1>
-                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300 flex-shrink-0" />
                 </div>
-                <p className="text-xs sm:text-sm tracking-wide uppercase mt-0.5 sm:mt-1 text-shadow-md text-white">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
                   Predictive Modeling for Retail Wealth Diversification
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:block bg-white/20 dark:bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 border border-white/30">
-                <p className="text-xs sm:text-sm font-medium text-white">
+              <div className="hidden sm:block border border-border rounded-md px-3 py-1.5 sm:px-4 sm:py-2 bg-card/50">
+                <p className="text-xs sm:text-sm font-medium text-foreground">
                   Intelligent Investment Advisory
                 </p>
               </div>
@@ -175,15 +174,15 @@ const Index = () => {
       <main
         id="main-content"
         tabIndex={-1}
-        className="container max-w-7xl py-6 sm:py-8 px-4 sm:px-6 pb-24 sm:pb-32"
+        className="container max-w-7xl py-6 sm:py-8 px-4 sm:px-6 pb-24 sm:pb-32 animate-fade-in"
       >
         {/* Tool Description */}
-        <div className="mb-8 sm:mb-10 text-center">
-          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">
+        <div className="mb-8 sm:mb-10">
+          <p className="text-lg sm:text-xl font-display font-semibold text-foreground mb-2">
             AI-powered investment advisory platform for personalized wealth
             management
           </p>
-          <p className="text-sm sm:text-base text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-3xl">
             Get customized portfolio recommendations based on your financial
             profile, risk tolerance, and market insights
           </p>
@@ -192,17 +191,17 @@ const Index = () => {
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Left Column - Full Form (Split internally) */}
           <div className="lg:col-span-2">
-            <Card className="animate-fade-in shadow-lg border-primary/10">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-foreground">
+            <div className="animate-fade-in bg-card border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-200">
+              <div className="p-6 pb-4">
+                <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-display font-semibold text-foreground">
                   <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   Investor Profile
-                </CardTitle>
-                <p className="text-xs sm:text-sm text-muted-foreground">
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                   Complete your financial profile (use tabs on mobile)
                 </p>
-              </CardHeader>
-              <CardContent>
+              </div>
+              <div className="p-6 pt-0">
                 <InvestorForm
                   profile={profile}
                   onChange={handleProfileChange}
@@ -213,7 +212,7 @@ const Index = () => {
                   <Button
                     onClick={handleCalculate}
                     disabled={isCalculating}
-                    className="w-full py-4 sm:py-6 text-base sm:text-lg font-semibold brand-gradient hover:opacity-90 transition-opacity text-white shadow-lg hover:shadow-xl min-h-[56px] sm:min-h-[64px]"
+                    className="w-full py-4 sm:py-6 text-base sm:text-lg font-semibold bg-primary hover:bg-primary/90 transition-colors text-primary-foreground min-h-[56px] sm:min-h-[64px]"
                     size="lg"
                   >
                     {isCalculating ? (
@@ -260,20 +259,20 @@ const Index = () => {
                     </p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* Right Column - Information Panel */}
           <div className="mt-6 sm:mt-0">
-            <Card className="animate-fade-in shadow-lg border-primary/10 h-full">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-foreground">
+            <div className="animate-fade-in bg-card border rounded-lg h-full p-6 hover:border-primary/50 transition-colors duration-200 animation-delay-100">
+              <div className="pb-4">
+                <h2 className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                   <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   How It Works
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+                </h2>
+              </div>
+              <div className="space-y-6">
                 <div className="space-y-4 sm:space-y-6">
                   <div className="flex items-start gap-3">
                     <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
@@ -350,8 +349,8 @@ const Index = () => {
                     </Button>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -360,7 +359,7 @@ const Index = () => {
           <Button
             onClick={handleCalculate}
             disabled={isCalculating}
-            className="w-full py-4 text-lg font-semibold brand-gradient hover:opacity-90 transition-opacity text-white shadow-xl hover:shadow-2xl min-h-[56px]"
+            className="w-full py-4 text-lg font-semibold bg-primary hover:bg-primary/90 transition-colors text-primary-foreground min-h-[56px]"
             size="lg"
           >
             {isCalculating ? (
