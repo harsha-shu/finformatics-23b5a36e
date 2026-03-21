@@ -127,7 +127,7 @@ const Index = () => {
   const result = calculatedResult;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background ascii-finance-bg">
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
