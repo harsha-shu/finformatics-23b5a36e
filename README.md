@@ -15,7 +15,7 @@ An AI-powered investment advisory platform built with React and TypeScript that 
 ### 📱 Responsive Modern UI
 - **Dual Interface**: Tabs for mobile (Personal/Financial sections) and two-column layout for desktop
 - **Dark/Light/System Theme**: Built-in theme toggle with proper dark mode support
-- **Gradient Branding**: Professional gradient headers with enhanced finance symbol background patterns (15+ symbols, optimized for both light/dark modes)
+- **Gradient Branding**: Professional gradient headers with stock market bull background images (theme-appropriate bull images for light/dark modes)
 - **Accessibility**: Full keyboard navigation and screen reader support
 
 ### 📊 Advanced Investment Modeling
@@ -322,7 +322,7 @@ npm run lint
 ### Theme System
 - **Light/Dark/System**: Three theme options
 - **CSS Variables**: Consistent design tokens
-- **Background Patterns**: Theme-aware finance symbol backgrounds with enhanced visibility (15+ finance symbols including currencies, crypto, and mathematical symbols)
+- **Background Images**: Theme-aware stock market bull backgrounds with subtle overlay (light/dark optimized bull imagery)
 - **Icon Consistency**: Lucide icons throughout
 
 ---
