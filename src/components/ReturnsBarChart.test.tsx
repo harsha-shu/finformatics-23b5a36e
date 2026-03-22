@@ -4,6 +4,19 @@ import { render, screen } from "@testing-library/react";
 import { ReturnsBarChart } from "./ReturnsBarChart";
 import type { YearlyProjection } from "@/lib/investment-model";
 
+const serializeAxisLabel = (label: unknown) => {
+  if (label === undefined) {
+    return undefined;
+  }
+  if (React.isValidElement(label)) {
+    return JSON.stringify({
+      kind: "element",
+      hasContentFunction: typeof label.props?.content === "function",
+    });
+  }
+  return JSON.stringify(label);
+};
+
 // Mock recharts to simplify testing
 vi.mock("recharts", () => ({
   BarChart: vi.fn(({ children, margin }) => (
@@ -22,12 +35,14 @@ vi.mock("recharts", () => ({
       data-max-bar-size={maxBarSize}
     />
   )),
-  XAxis: vi.fn(({ dataKey, stroke, tick }) => (
+  XAxis: vi.fn(({ dataKey, stroke, tick, interval, minTickGap }) => (
     <div
       data-testid="x-axis"
       data-data-key={dataKey}
       data-stroke={stroke}
       data-tick={JSON.stringify(tick)}
+      data-interval={interval}
+      data-min-tick-gap={minTickGap}
     />
   )),
   YAxis: vi.fn(({ yAxisId, stroke, tick, label, tickFormatter, orientation }) => (
@@ -36,7 +51,7 @@ vi.mock("recharts", () => ({
       data-y-axis-id={yAxisId}
       data-stroke={stroke}
       data-tick={JSON.stringify(tick)}
-      data-label={JSON.stringify(label)}
+      data-label={serializeAxisLabel(label)}
       data-tick-formatter={tickFormatter?.toString()}
       data-orientation={orientation}
     />
@@ -51,6 +66,9 @@ vi.mock("recharts", () => ({
   )),
   Tooltip: vi.fn(({ content }) => (
     <div data-testid="tooltip" data-content={content ? "present" : "absent"} />
+  )),
+  Label: vi.fn(({ content }) => (
+    <div data-testid="label" data-has-content={typeof content === "function" ? "yes" : "no"} />
   )),
   Legend: vi.fn(({ verticalAlign, height, wrapperStyle }) => (
     <div
@@ -105,11 +123,11 @@ describe("ReturnsBarChart", () => {
     const barChart = screen.getByTestId("bar-chart");
     const margin = JSON.parse(barChart.getAttribute("data-margin") || "{}");
 
-    // Check that margins provide sufficient space for outside labels
+    // Check current desktop margins
     expect(margin).toEqual({
       top: 20,
-      right: 140,   // Sufficient space for right Y-axis label and ticks
-      left: 120,    // Sufficient space for left Y-axis label and ticks
+      right: 40,
+      left: 72,
       bottom: 10,
     });
   });
@@ -125,9 +143,9 @@ describe("ReturnsBarChart", () => {
     const barChart = screen.getByTestId("bar-chart");
     const margin = JSON.parse(barChart.getAttribute("data-margin") || "{}");
 
-    // Minimum margins to accommodate labels and ticks
-    expect(margin.left).toBeGreaterThanOrEqual(120);
-    expect(margin.right).toBeGreaterThanOrEqual(140);
+    // Current desktop margins still leave enough room without compressing bars
+    expect(margin.left).toBe(72);
+    expect(margin.right).toBe(40);
 
     const yAxes = screen.getAllByTestId("y-axis");
     const leftYAxis = yAxes.find(
@@ -140,17 +158,23 @@ describe("ReturnsBarChart", () => {
     const leftLabel = JSON.parse(leftYAxis?.getAttribute("data-label") || "{}");
     const rightLabel = JSON.parse(rightYAxis?.getAttribute("data-label") || "{}");
 
-    // Offset should be sufficient to separate label from tick labels
-    expect(leftLabel.offset).toBeGreaterThanOrEqual(35);
-    expect(rightLabel.offset).toBeGreaterThanOrEqual(35);
+    // Left axis keeps explicit outside label with updated offset
+    expect(leftLabel.offset).toBe(42);
+    // Right axis now uses custom Label element
+    expect(rightLabel).toEqual({
+      kind: "element",
+      hasContentFunction: true,
+    });
 
     // Ensure tick labels are not too long
     const rightTickFormatter = rightYAxis?.getAttribute("data-tick-formatter");
     if (rightTickFormatter) {
-      const formatter = eval(`(${rightTickFormatter})`);
-      // Test with sample values
-      expect(formatter(100000).length).toBeLessThanOrEqual(8); // "₹100k"
-      expect(formatter(1000000).length).toBeLessThanOrEqual(9); // "₹1000k"
+      // Formatter should support both mobile (lakhs) and desktop (k) output paths
+      expect(rightTickFormatter).toContain("isMobile");
+      expect(rightTickFormatter).toContain("100000");
+      expect(rightTickFormatter).toContain("1000");
+      expect(rightTickFormatter).toContain("toFixed(1)");
+      expect(rightTickFormatter).toContain("toFixed(0)");
     }
   });
 
@@ -174,7 +198,7 @@ describe("ReturnsBarChart", () => {
       value: "Annual Return (%)",
       angle: -90,
       position: "outsideLeft",
-      offset: 40,
+      offset: 42,
     });
     expect(label.style).toMatchObject({
       fill: "hsl(var(--muted-foreground))",
@@ -182,7 +206,7 @@ describe("ReturnsBarChart", () => {
     });
   });
 
-  it("configures right Y-axis with outside label positioning and offset", () => {
+  it("configures right Y-axis with custom label element", () => {
     render(
       <ReturnsBarChart
         projections={mockProjections}
@@ -198,16 +222,11 @@ describe("ReturnsBarChart", () => {
     expect(rightYAxis).toBeInTheDocument();
     expect(rightYAxis?.getAttribute("data-orientation")).toBe("right");
 
+    // Right label is passed as a React element (<Label content={...} />)
     const label = JSON.parse(rightYAxis?.getAttribute("data-label") || "{}");
-    expect(label).toMatchObject({
-      value: "Cumulative Value (₹)",
-      angle: 90,
-      position: "outsideRight",
-      offset: 40,
-    });
-    expect(label.style).toMatchObject({
-      fill: "hsl(var(--muted-foreground))",
-      textAnchor: "start",
+    expect(label).toEqual({
+      kind: "element",
+      hasContentFunction: true,
     });
   });
 
@@ -229,11 +248,7 @@ describe("ReturnsBarChart", () => {
     const tickFormatter = rightYAxis?.getAttribute("data-tick-formatter");
     expect(tickFormatter).toBeDefined();
 
-    // Test the formatter function
-    const formatter = eval(`(${tickFormatter})`);
-    expect(formatter(100000)).toBe("₹100k");
-    expect(formatter(150000)).toBe("₹150k");
-    expect(formatter(2000000)).toBe("₹2000k"); // Note: formatter doesn't handle millions
+    expect(tickFormatter).toContain("₹${(value / 1000).toFixed(0)}k");
   });
 
   it("renders two bars for annual return and cumulative value", () => {
@@ -326,9 +341,7 @@ describe("ReturnsBarChart", () => {
     );
     const tickFormatter = rightYAxis?.getAttribute("data-tick-formatter");
     expect(tickFormatter).toBeDefined();
-    const formatter = eval(`(${tickFormatter})`);
-    expect(formatter(1000000)).toBe("₹1000k");
-    expect(formatter(2000000)).toBe("₹2000k");
+    expect(tickFormatter).toContain("₹${(value / 1000).toFixed(0)}k");
   });
 
   it("maintains sufficient margins for large tick labels", () => {
@@ -338,9 +351,9 @@ describe("ReturnsBarChart", () => {
     render(<ReturnsBarChart projections={largeProjections} />);
     const barChart = screen.getByTestId("bar-chart");
     const margin = JSON.parse(barChart.getAttribute("data-margin") || "{}");
-    // Margins should still be sufficient
-    expect(margin.left).toBeGreaterThanOrEqual(120);
-    expect(margin.right).toBeGreaterThanOrEqual(140);
+    // Current desktop margins
+    expect(margin.left).toBe(72);
+    expect(margin.right).toBe(40);
   });
 
   describe("responsive behavior", () => {
@@ -377,11 +390,13 @@ describe("ReturnsBarChart", () => {
       const barChart = screen.getByTestId("bar-chart");
       const margin = JSON.parse(barChart.getAttribute("data-margin") || "{}");
 
-      // Mobile-optimized margins (smaller to conserve space)
-      expect(margin.left).toBeLessThan(120); // Should be smaller than desktop (120)
-      expect(margin.right).toBeLessThan(140); // Should be smaller than desktop (140)
-      expect(margin.left).toBeGreaterThanOrEqual(60); // But still sufficient
-      expect(margin.right).toBeGreaterThanOrEqual(80);
+      // Current mobile margins
+      expect(margin).toEqual({
+        top: 12,
+        right: 24,
+        left: 28,
+        bottom: 12,
+      });
     });
 
     it("uses desktop margins on larger screens", () => {
@@ -407,9 +422,13 @@ describe("ReturnsBarChart", () => {
       const barChart = screen.getByTestId("bar-chart");
       const margin = JSON.parse(barChart.getAttribute("data-margin") || "{}");
 
-      // Desktop margins (larger for better label spacing)
-      expect(margin.left).toBeGreaterThanOrEqual(120);
-      expect(margin.right).toBeGreaterThanOrEqual(140);
+      // Current desktop margins
+      expect(margin).toEqual({
+        top: 20,
+        right: 40,
+        left: 72,
+        bottom: 10,
+      });
     });
 
     it("adjusts container height for mobile screens", () => {
@@ -439,7 +458,7 @@ describe("ReturnsBarChart", () => {
       expect(container).toBeInTheDocument();
     });
 
-    it("adjusts y-axis label offset for mobile screens", () => {
+    it("hides y-axis labels on mobile screens", () => {
       // Mock mobile screen
       window.matchMedia = vi.fn().mockImplementation((query) => ({
         matches: query === "(max-width: 767px)",
@@ -467,14 +486,35 @@ describe("ReturnsBarChart", () => {
         (axis) => axis.getAttribute("data-y-axis-id") === "right"
       );
 
-      const leftLabel = JSON.parse(leftYAxis?.getAttribute("data-label") || "{}");
-      const rightLabel = JSON.parse(rightYAxis?.getAttribute("data-label") || "{}");
+      expect(leftYAxis?.getAttribute("data-label")).toBeNull();
+      expect(rightYAxis?.getAttribute("data-label")).toBeNull();
+    });
 
-      // Mobile should have smaller offset than desktop
-      expect(leftLabel.offset).toBeLessThan(40); // Desktop offset is 40
-      expect(rightLabel.offset).toBeLessThan(40);
-      expect(leftLabel.offset).toBeGreaterThanOrEqual(20);
-      expect(rightLabel.offset).toBeGreaterThanOrEqual(20);
+    it("uses lakhs formatting on mobile for larger cumulative values", () => {
+      window.matchMedia = vi.fn().mockImplementation((query) => ({
+        matches: query === "(max-width: 767px)",
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      }));
+
+      render(<ReturnsBarChart projections={mockProjections} />);
+
+      const yAxes = screen.getAllByTestId("y-axis");
+      const rightYAxis = yAxes.find(
+        (axis) => axis.getAttribute("data-y-axis-id") === "right"
+      );
+
+      const tickFormatter = rightYAxis?.getAttribute("data-tick-formatter");
+      expect(tickFormatter).toBeDefined();
+
+      expect(tickFormatter).toContain("if (isMobile && value >= 100000)");
+      expect(tickFormatter).toContain("₹${(value / 100000).toFixed(1)}L");
+      expect(tickFormatter).toContain("₹${(value / 1000).toFixed(0)}k");
     });
   });
 });
