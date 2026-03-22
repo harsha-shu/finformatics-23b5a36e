@@ -159,28 +159,27 @@
 
 /* Stock market bull background images */
 .stock-market-bg {
-  position: relative;
-  isolation: isolate;
+    position: relative;
+    isolation: isolate;
 }
 
 .stock-market-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("./assets/StockMarketBullLight.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  opacity: 0.15;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("./assets/StockMarketBullLight.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.5;
+    z-index: -1;
 }
 
 .dark .stock-market-bg::before {
-  background-image: url("./assets/StockMarketBullDark.png");
-  opacity: 0.15;
+    background-image: url("./assets/StockMarketBullDark.png");
+    opacity: 0.5;
 }
-

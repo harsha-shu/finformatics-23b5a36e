@@ -97,9 +97,8 @@ describe("Index Page", () => {
     const badgeContainer = badgeText.closest("div");
     expect(badgeContainer).toBeInTheDocument();
 
-    // Check that badge uses theme-aware background classes
-    expect(badgeContainer?.className).toContain("bg-white/20");
-    expect(badgeContainer?.className).toContain("dark:bg-white/10");
+    // Check that badge uses transparent background for visibility
+    expect(badgeContainer?.className).toContain("bg-transparent");
 
     // Check that text uses foreground color for proper contrast in both modes
     expect(badgeText.className).toContain("text-foreground");
