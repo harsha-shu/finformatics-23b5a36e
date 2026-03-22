@@ -137,7 +137,7 @@ const Index = () => {
       </a>
 
       {/* Editorial Header */}
-      <header className="border-b bg-transparent backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b frosted-glass sticky top-0 z-50">
         <div className="container max-w-7xl py-3 sm:py-4 px-4 sm:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -191,7 +191,7 @@ const Index = () => {
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Left Column - Full Form (Split internally) */}
           <div className="lg:col-span-2">
-            <div className="animate-fade-in bg-transparent border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-200">
+            <div className="animate-fade-in frosted-glass border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-200">
               <div className="p-6 pb-4">
                 <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-display font-semibold text-foreground">
                   <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -265,7 +265,7 @@ const Index = () => {
 
           {/* Right Column - Information Panel */}
           <div className="mt-6 sm:mt-0">
-            <div className="animate-fade-in bg-transparent border rounded-lg h-full p-6 hover:border-primary/50 transition-colors duration-200 animation-delay-100">
+            <div className="animate-fade-in frosted-glass border rounded-lg h-full p-6 hover:border-primary/50 transition-colors duration-200 animation-delay-100">
               <div className="pb-4">
                 <h2 className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                   <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />

@@ -39,7 +39,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto sm:max-w-[95vw] sm:max-h-[85vh] px-0 sm:px-0">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto sm:max-w-[95vw] sm:max-h-[85vh] px-0 sm:px-0 modal-stock-bg">
         <DialogHeader className="px-3 sm:px-4">
           <DialogTitle className="text-2xl font-display flex items-center gap-2 text-foreground">
             <TrendingUp className="h-6 w-6 text-primary" />
@@ -56,7 +56,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
             {/* Left Column - Charts */}
             <div className="space-y-6">
               {/* Projected Returns Bar Chart */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <TrendingUp className="h-5 w-5 text-primary" />
@@ -72,7 +72,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Asset Allocation Chart */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <PieChart className="h-5 w-5 text-primary" />
@@ -118,7 +118,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
             {/* Right Column - Information */}
             <div className="space-y-6">
               {/* Suggested Investment */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <DollarSign className="h-5 w-5 text-primary" />
@@ -143,7 +143,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Risk Analysis */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <Shield className="h-5 w-5 text-primary" />
@@ -173,7 +173,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Why This Recommendation? - Expandable Section */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg sm:text-xl font-display font-semibold text-foreground">
                     <Lightbulb className="h-5 w-5 text-primary" />
@@ -241,7 +241,7 @@ export function ResultsModal({ result, isOpen, onClose }: ResultsModalProps) {
               </Card>
 
               {/* Disclaimer */}
-              <Card className="border shadow-lg">
+              <Card className="border shadow-lg frosted-glass">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg sm:text-xl font-display font-semibold text-foreground">
                     Important Disclaimer

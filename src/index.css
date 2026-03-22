@@ -155,6 +155,12 @@
     .animation-delay-300 {
         animation-delay: 300ms;
     }
+
+    .frosted-glass {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        background-color: hsl(var(--background) / 0.6);
+    }
 }
 
 /* Stock market bull background images */
@@ -182,4 +188,26 @@
 .dark .stock-market-bg::before {
     background-image: url("./assets/StockMarketBullDark.png");
     opacity: 0.5;
+}
+
+/* Stock market background for modals (covers entire modal area) */
+.modal-stock-bg {
+    background-image:
+        linear-gradient(
+            hsl(var(--background) / 0.5),
+            hsl(var(--background) / 0.5)
+        ),
+        url("./assets/StockMarketBullLight.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.dark .modal-stock-bg {
+    background-image:
+        linear-gradient(
+            hsl(var(--background) / 0.5),
+            hsl(var(--background) / 0.5)
+        ),
+        url("./assets/StockMarketBullDark.png");
 }

@@ -9,6 +9,34 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { YearlyProjection } from "@/lib/investment-model";
+import { useState, useEffect } from "react";
+
+function useIsMobile() {
+  // Initialize with false for SSR, will update on client
+  const [isMobile, setIsMobile] = useState(() => {
+    // Check if window is available (client-side)
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(max-width: 767px)").matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const updateIsMobile = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    // Add event listener
+    mediaQuery.addEventListener("change", updateIsMobile);
+
+    // Cleanup
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
+  }, []);
+
+  return isMobile;
+}
 
 interface ReturnsBarChartProps {
   projections: YearlyProjection[];
@@ -19,6 +47,17 @@ export function ReturnsBarChart({
   projections,
   initialInvestment,
 }: ReturnsBarChartProps) {
+  const isMobile = useIsMobile();
+
+  // Responsive values
+  const margin = isMobile
+    ? { top: 15, right: 100, left: 80, bottom: 5 } // Mobile-optimized
+    : { top: 20, right: 140, left: 120, bottom: 10 }; // Desktop
+
+  const yAxisLabelOffset = isMobile ? 25 : 40;
+  const maxBarSize = isMobile ? 30 : 40;
+  const containerHeight = isMobile ? "h-60" : "h-80"; // 240px on mobile, 320px on desktop
+
   // Format the data for the chart
   const chartData = projections.map((proj) => ({
     year: `Year ${proj.year}`,
@@ -79,19 +118,19 @@ export function ReturnsBarChart({
   return (
     <div className="w-full h-full space-y-4">
       <div>
-        <h3 className="text-lg font-semibold font-display text-foreground">
+        <h3 className="text-base sm:text-lg font-semibold font-display text-foreground">
           Projected Returns Over {projections.length} Years
         </h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Annual returns and cumulative portfolio value projection
         </p>
       </div>
 
-      <div className="h-80">
+      <div className={containerHeight}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            margin={margin}
           >
             <CartesianGrid
               strokeDasharray="3 3"
@@ -101,45 +140,48 @@ export function ReturnsBarChart({
             <XAxis
               dataKey="year"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
             />
             <YAxis
               yAxisId="left"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
               label={{
                 value: "Annual Return (%)",
                 angle: -90,
-                position: "insideLeft",
-                style: { fill: "hsl(var(--muted-foreground))" },
+                position: "outsideLeft",
+                offset: yAxisLabelOffset,
+                style: {
+                  fill: "hsl(var(--muted-foreground))",
+                  textAnchor: "end" // Text ends at label position, extends leftward away from chart
+                },
               }}
             />
             <YAxis
               yAxisId="right"
               orientation="right"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
               tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
               label={{
                 value: "Cumulative Value (₹)",
                 angle: 90,
-                position: "insideRight",
-                style: { fill: "hsl(var(--muted-foreground))" },
+                position: "outsideRight",
+                offset: yAxisLabelOffset,
+                style: {
+                  fill: "hsl(var(--muted-foreground))",
+                  textAnchor: "start" // Text starts at label position, extends rightward away from chart
+                },
               }}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Legend
-              verticalAlign="top"
-              height={36}
-              wrapperStyle={{ paddingBottom: "20px" }}
-            />
             <Bar
               yAxisId="left"
               dataKey="annualReturn"
               name="Annual Return (%)"
               fill="hsl(var(--primary))"
               radius={[4, 4, 0, 0]}
-              maxBarSize={40}
+              maxBarSize={maxBarSize}
             />
             <Bar
               yAxisId="right"
@@ -147,7 +189,7 @@ export function ReturnsBarChart({
               name="Cumulative Value (₹)"
               fill="hsl(142, 72%, 46%)" // Green color from allocation chart
               radius={[4, 4, 0, 0]}
-              maxBarSize={40}
+              maxBarSize={maxBarSize}
             />
           </BarChart>
         </ResponsiveContainer>
