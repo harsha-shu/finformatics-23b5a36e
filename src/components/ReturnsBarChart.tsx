@@ -3,6 +3,7 @@ import {
   Bar,
   XAxis,
   YAxis,
+  Label,
   CartesianGrid,
   Tooltip,
   Legend,
@@ -49,18 +50,53 @@ export function ReturnsBarChart({
 }: ReturnsBarChartProps) {
   const isMobile = useIsMobile();
 
+  // Custom right Y-axis label renderer to control tspan dy
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderRightAxisLabel = (labelProps: any) => {
+    const { viewBox, x, y, width, height } = labelProps;
+    const boxX = viewBox?.x ?? x ?? 0;
+    const boxY = viewBox?.y ?? y ?? 0;
+    const boxWidth = viewBox?.width ?? width ?? 0;
+    const boxHeight = viewBox?.height ?? height ?? 0;
+
+    const labelX = boxX + boxWidth - (isMobile ? 26 : 36) + rightAxisLabelOffset;
+    const labelY = boxY + boxHeight / 2;
+
+    return (
+      <text
+        x={labelX}
+        y={labelY}
+        fill="hsl(var(--muted-foreground))"
+        textAnchor="start"
+        transform={`rotate(90, ${labelX}, ${labelY})`}
+      >
+        <tspan x={labelX} dy="-1em">
+          Cumulative Value (₹)
+        </tspan>
+      </text>
+    );
+  };
+
   // Responsive values
   const margin = isMobile
-    ? { top: 15, right: 100, left: 80, bottom: 5 } // Mobile-optimized
-    : { top: 20, right: 140, left: 120, bottom: 10 }; // Desktop
+    ? { top: 12, right: 24, left: 28, bottom: 12 }
+    : { top: 20, right: 40, left: 72, bottom: 10 }; // Desktop
 
-  const yAxisLabelOffset = isMobile ? 25 : 40;
-  const maxBarSize = isMobile ? 30 : 40;
-  const containerHeight = isMobile ? "h-60" : "h-80"; // 240px on mobile, 320px on desktop
+  const yAxisLabelOffset = isMobile ? 25 : 42;
+  const rightAxisLabelOffset = 0;
+  const maxBarSize = isMobile ? 22 : 40;
+  const containerHeight = isMobile ? "h-64" : "h-80";
+
+  const formatCumulativeTick = (value: number) => {
+    if (isMobile && value >= 100000) {
+      return `₹${(value / 100000).toFixed(1)}L`;
+    }
+    return `₹${(value / 1000).toFixed(0)}k`;
+  };
 
   // Format the data for the chart
   const chartData = projections.map((proj) => ({
-    year: `Year ${proj.year}`,
+    year: isMobile ? `Y${proj.year}` : `Year ${proj.year}`,
     annualReturn: proj.return,
     cumulativeValue: proj.cumulativeValue,
     // For tooltip display
@@ -140,13 +176,15 @@ export function ReturnsBarChart({
             <XAxis
               dataKey="year"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 11 : 12 }}
+              interval="preserveStartEnd"
+              minTickGap={isMobile ? 16 : 18}
             />
             <YAxis
               yAxisId="left"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
-              label={{
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 11 : 12 }}
+              label={isMobile ? undefined : {
                 value: "Annual Return (%)",
                 angle: -90,
                 position: "outsideLeft",
@@ -161,18 +199,9 @@ export function ReturnsBarChart({
               yAxisId="right"
               orientation="right"
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 12 : 14 }}
-              tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
-              label={{
-                value: "Cumulative Value (₹)",
-                angle: 90,
-                position: "outsideRight",
-                offset: yAxisLabelOffset,
-                style: {
-                  fill: "hsl(var(--muted-foreground))",
-                  textAnchor: "start" // Text starts at label position, extends rightward away from chart
-                },
-              }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: isMobile ? 11 : 12 }}
+              tickFormatter={formatCumulativeTick}
+              label={isMobile ? undefined : <Label content={renderRightAxisLabel} />}
             />
             <Tooltip content={<CustomTooltip />} />
             <Bar
